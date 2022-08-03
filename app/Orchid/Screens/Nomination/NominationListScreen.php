@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Nomination;
 
 use App\Models\Nomination;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
+use App\Orchid\Layouts\Nomination\NominationListLayout;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
@@ -52,7 +53,7 @@ class NominationListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            NominationEditLayout::class,
+            NominationListLayout::class,
         ];
     }
 }
