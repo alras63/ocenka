@@ -16,4 +16,8 @@ class Assessor extends Model
     protected $table = 'assesor_nomination';
 
     protected $guarded = [];
+
+    public function event(){
+        return $this->hasMany(Event::class);
+    }
 }

@@ -125,7 +125,7 @@ class EventEditScreen extends Screen
         $event->save();
 
         $assessors = $request->get('assessor');
-
+        Assessor::where('event', $event->id)->delete();
         for($i = 0; $i < count($assessors); $i++){
             $assessor = new Assessor;
             $user = User::where('id', $assessors[$i])->first();
@@ -134,7 +134,6 @@ class EventEditScreen extends Screen
             $assessor->save();
         }
 
-        //Toast::info(__('Мероприятие было сохранено'));
 
         return redirect()->route('platform.events');
     }
