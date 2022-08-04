@@ -63,4 +63,8 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function assessor(){
+        return $this->hasMany(Assessor::class, 'asessor');
+    }
 }

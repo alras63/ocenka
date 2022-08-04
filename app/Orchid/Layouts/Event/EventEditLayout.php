@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Orchid\Layouts\Event;
 
 use App\Models\Event;
+use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
+use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\TD;
 
 class EventEditLayout extends Rows
@@ -50,6 +52,12 @@ class EventEditLayout extends Rows
             CheckBox::make('event.isClosed')
                 ->title("Скрыть мероприятие (закрыть)")
                 ->sendTrueOrFalse(),
+
+            Relation::make('assessor.')
+                ->fromModel(User::class, 'surname')
+                ->multiple()
+                ->title('Асессоры')
+
         ];
     }
 }
