@@ -7,6 +7,7 @@ namespace App\Orchid\Screens\Event;
 use App\Models\Asessor;
 use App\Models\Assessor;
 use App\Models\Event;
+use App\Models\EventNomination;
 use App\Models\Nomination;
 use App\Models\User;
 use App\Orchid\Layouts\Nomination\EventEditLayout;
@@ -40,6 +41,9 @@ class EventEditScreen extends Screen
             'event' => $event,
             'assessor' => User::whereHas('assessor', function($query) use($event){
                 $query->where('event', $event->id);
+            })->get(),
+            'nominations' => Nomination::whereHas('eventNomination', function($query) use($event){
+                $query->where('events', $event->id);
             })->get(),
         ];
     }
@@ -118,18 +122,31 @@ class EventEditScreen extends Screen
             ],
             'assessor.' => [
                 'array'
+            ],
+            'nominations.' => [
+                'array'
             ]
         ]);
 
+
+
         $event->fill($request->get('event'));
         $event->save();
+
+        $nominations = $request->get('nominations');
+        EventNomination::where('events', $event->id)->delete();
+        for($i=0; $i<count($nominations); $i++){
+            $nomination = new EventNomination();
+            $nomination->fill(['events'=>$event['id'], 'nominations'=>$nominations[$i]]);
+            $nomination->save();
+        }
 
         $assessors = $request->get('assessor');
         Assessor::where('event', $event->id)->delete();
         for($i = 0; $i < count($assessors); $i++){
             $assessor = new Assessor;
             $user = User::where('id', $assessors[$i])->first();
-            $currentEvent = Event::where('name', $event['name'])->first();
+            $currentEvent = Event::where('id', $event['id'])->first();
             $assessor->fill(['asessor' => $user->id, 'event'=>$currentEvent->id]);
             $assessor->save();
         }

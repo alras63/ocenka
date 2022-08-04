@@ -19,4 +19,8 @@ class Nomination extends Model
     protected $table = 'nominations';
 
     protected $guarded = [];
+
+    public function eventNomination(){
+        return $this->hasMany(EventNomination::class, 'nominations');
+    }
 }
