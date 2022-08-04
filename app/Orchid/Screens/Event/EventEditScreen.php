@@ -45,7 +45,6 @@ class EventEditScreen extends Screen
     }
 
 
-
     /**
      * Display header name.
      *
@@ -117,7 +116,7 @@ class EventEditScreen extends Screen
             'event.isClosed' => [
                 'integer'
             ],
-            'assessor.surname' => [
+            'assessor.' => [
                 'array'
             ]
         ]);
@@ -127,9 +126,9 @@ class EventEditScreen extends Screen
 
         $assessors = $request->get('assessor');
 
-        for($i = 0; $i < count($assessors['surname']); $i++){
+        for($i = 0; $i < count($assessors); $i++){
             $assessor = new Assessor;
-            $user = User::where('id', $assessors['surname'][$i])->first();
+            $user = User::where('id', $assessors[$i])->first();
             $currentEvent = Event::where('name', $event['name'])->first();
             $assessor->fill(['asessor' => $user->id, 'event'=>$currentEvent->id]);
             $assessor->save();

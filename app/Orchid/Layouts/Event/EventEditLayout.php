@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orchid\Layouts\Event;
 
 use App\Models\Event;
+use App\Models\Role;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Field;
@@ -12,7 +13,7 @@ use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Layouts\Rows;
-use Orchid\Screen\Fields\Relation;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\TD;
 
 class EventEditLayout extends Rows
@@ -53,8 +54,10 @@ class EventEditLayout extends Rows
                 ->title("Скрыть мероприятие (закрыть)")
                 ->sendTrueOrFalse(),
 
-            Relation::make('assessor.')
-                ->fromModel(User::class, 'surname')
+            Select::make('assessor.')
+                ->fromModel(User::whereHas('roleUser', function($q){
+                    $q->where('role_id', Role::where('name', 'Асессор')->first()->id);
+                }), 'name')
                 ->multiple()
                 ->title('Асессоры')
 
