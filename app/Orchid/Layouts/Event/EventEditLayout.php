@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orchid\Layouts\Event;
 
 use App\Models\Event;
+use App\Models\Nomination;
 use App\Models\Role;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
@@ -59,7 +60,11 @@ class EventEditLayout extends Rows
                     $q->where('role_id', Role::where('name', 'Асессор')->first()->id);
                 }), 'name')
                 ->multiple()
-                ->title('Асессоры')
+                ->title('Асессоры'),
+            Select::make('nominations.')
+                ->fromModel(Nomination::class, 'name')
+                ->multiple()
+                ->title('Номинации')
 
         ];
     }
