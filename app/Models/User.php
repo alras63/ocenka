@@ -63,4 +63,12 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function assessor(){
+        return $this->hasMany(Assessor::class, 'asessor');
+    }
+
+    public function roleUser(){
+        return $this->hasMany(RoleUser::class, 'user_id');
+    }
 }

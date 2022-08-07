@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Event;
 
+use App\Models\Asessor;
+use App\Models\Assessor;
 use App\Models\Event;
 use App\Models\Nomination;
+use App\Models\User;
 use App\Orchid\Layouts\Nomination\EventEditLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -22,6 +25,7 @@ class EventEditScreen extends Screen
      */
     public $event;
 
+
     /**
      * Query data.
      *
@@ -31,10 +35,15 @@ class EventEditScreen extends Screen
      */
     public function query(Event $event): iterable
     {
+
         return [
-            'event' => $event
+            'event' => $event,
+            'assessor' => User::whereHas('assessor', function($query) use($event){
+                $query->where('event', $event->id);
+            })->get(),
         ];
     }
+
 
     /**
      * Display header name.
@@ -107,13 +116,24 @@ class EventEditScreen extends Screen
             'event.isClosed' => [
                 'integer'
             ],
+            'assessor.' => [
+                'array'
+            ]
         ]);
 
         $event->fill($request->get('event'));
-
         $event->save();
 
-        Toast::info(__('Мероприятие было сохранено'));
+        $assessors = $request->get('assessor');
+        Assessor::where('event', $event->id)->delete();
+        for($i = 0; $i < count($assessors); $i++){
+            $assessor = new Assessor;
+            $user = User::where('id', $assessors[$i])->first();
+            $currentEvent = Event::where('name', $event['name'])->first();
+            $assessor->fill(['asessor' => $user->id, 'event'=>$currentEvent->id]);
+            $assessor->save();
+        }
+
 
         return redirect()->route('platform.events');
     }
