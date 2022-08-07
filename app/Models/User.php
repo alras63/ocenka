@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    const ATTR_ID        = 'id';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -63,4 +66,9 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+    public function user_event_nomination(): HasMany {
+        return $this->hasMany(UserEventNomination::class, UserEventNomination::ATTR_USER, static::ATTR_ID);
+    }
+    const REL_USER_EVENT_NOMINATION = 'user_event_nomination';
 }

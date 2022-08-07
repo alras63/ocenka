@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Orchid\Screens\Event;
 
 use App\Models\Event;
+use App\Models\EventNomination;
 use App\Models\Nomination;
 use App\Orchid\Layouts\Nomination\EventEditLayout;
 use Illuminate\Http\Request;
@@ -31,8 +32,11 @@ class EventEditScreen extends Screen
      */
     public function query(Event $event): iterable
     {
+        $fullEvent = Event::with(Event::REL_EVENT_NOMINATIONS)
+            ->where(Event::ATTR_ID, '=', $event->id)->first();
         return [
-            'event' => $event
+            'event' => $event,
+            'event_nominations' => $fullEvent->event_nominations,
         ];
     }
 
@@ -57,11 +61,6 @@ class EventEditScreen extends Screen
             Button::make(__('Сохранить'))
                 ->icon('check')
                 ->method('save'),
-
-            Button::make(__('Удалить'))
-                ->icon('trash')
-                ->method('remove')
-                ->canSee($this->event->exists),
         ];
     }
 
@@ -76,7 +75,11 @@ class EventEditScreen extends Screen
             Layout::block([
                 \App\Orchid\Layouts\Event\EventEditLayout::class,
             ])
-                ->title('Мероприятие')
+                ->title('Мероприятие'),
+             Layout::block([
+                \App\Orchid\Layouts\Event\EventNominationsListLayout::class,
+            ])
+                ->title('Номинации')
         ];
     }
 

@@ -3,20 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Access\RoleAccess;
 use Orchid\Filters\Filterable;
 use Orchid\Metrics\Chartable;
+use Orchid\Platform\Models\User as Authenticatable;
 use Orchid\Screen\AsSource;
 
-class Nomination extends Model
+class UserEventNomination extends Authenticatable
 {
     use RoleAccess, Filterable, AsSource, Chartable, HasFactory;
-    const ATTR_ID        = 'id';
+    const ATTR_USER        = 'user';
+    const ATTR_NOMINATION  = 'nomination';
     /**
      * @var string
      */
-    protected $table = 'nominations';
+    protected $table = 'user_event_nomination';
 
     protected $guarded = [];
 }
