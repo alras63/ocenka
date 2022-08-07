@@ -13,9 +13,7 @@ use Orchid\Screen\AsSource;
 class Event extends Model
 {
     use RoleAccess, Filterable, AsSource, Chartable, HasFactory;
-
     const ATTR_ID        = 'id';
-
     /**
      * @var string
      */
@@ -23,9 +21,13 @@ class Event extends Model
 
     protected $guarded = [];
 
-
     public function event_nominations(): HasMany {
         return $this->hasMany(EventNomination::class, EventNomination::ATTR_EVENTS, static::ATTR_ID);
     }
     const REL_EVENT_NOMINATIONS = 'event_nominations';
+
+    public function assessor(){
+        return $this->hasMany(Assessor::class, 'event');
+    }
+    const REL_ASSESSOR = 'assessor';
 }

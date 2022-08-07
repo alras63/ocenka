@@ -35,4 +35,5 @@ class EventNomination extends Model
     }
     const REL_EVENT = 'event';
     const REL_NOMINATION = 'nomination';
+
 }

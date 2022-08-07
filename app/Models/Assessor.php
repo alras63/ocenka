@@ -9,18 +9,15 @@ use Orchid\Filters\Filterable;
 use Orchid\Metrics\Chartable;
 use Orchid\Screen\AsSource;
 
-class Nomination extends Model
+class Assessor extends Model
 {
     use RoleAccess, Filterable, AsSource, Chartable, HasFactory;
-    const ATTR_ID        = 'id';
-    /**
-     * @var string
-     */
-    protected $table = 'nominations';
+
+    protected $table = 'assesor_nomination';
 
     protected $guarded = [];
 
-    public function eventNomination(){
-        return $this->hasMany(EventNomination::class, 'nominations');
+    public function event(){
+        return $this->hasMany(Event::class);
     }
 }

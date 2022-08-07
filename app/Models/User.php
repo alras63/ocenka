@@ -71,4 +71,13 @@ class User extends Authenticatable
         return $this->hasMany(UserEventNomination::class, UserEventNomination::ATTR_USER, static::ATTR_ID);
     }
     const REL_USER_EVENT_NOMINATION = 'user_event_nomination';
+
+
+    public function assessor(){
+        return $this->hasMany(Assessor::class, 'asessor');
+    }
+
+    public function roleUser(){
+        return $this->hasMany(RoleUser::class, 'user_id');
+    }
 }
