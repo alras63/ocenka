@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Nomination;
 
+use App\Models\Event;
+use App\Models\EventNomination;
 use App\Models\Nomination;
+use App\Models\User;
+use App\Orchid\Layouts\Event\EventListLayout;
+use App\Orchid\Layouts\Event\EventNominationsListLayout;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
-use App\Orchid\Layouts\Nomination\NominationListLayout;
+use App\Orchid\Layouts\Nomination\NominationEstimatesTableLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
@@ -35,9 +40,13 @@ class NominationEditScreen extends Screen
         return [
             'nomination' => $nomination,
             'title' => 'title',
+            'estimates' => Event::all(),
+            'users' => User::all(),
 
         ];
     }
+
+
 
     /**
      * Display header name.
@@ -68,6 +77,8 @@ class NominationEditScreen extends Screen
         ];
     }
 
+
+
     /**
      * Views.
      *
@@ -79,7 +90,12 @@ class NominationEditScreen extends Screen
             Layout::block([
                 NominationEditLayout::class,
             ])
-                ->title('Номинация')
+                ->title('Номинация'),
+            Layout::columns(
+                [
+                    NominationEstimatesTableLayout::class,
+                ]
+            )
         ];
     }
 
