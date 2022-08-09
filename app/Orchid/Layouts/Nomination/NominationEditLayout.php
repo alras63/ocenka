@@ -7,6 +7,7 @@ namespace App\Orchid\Layouts\Nomination;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Rows;
+use Symfony\Component\Console\Helper\Table;
 
 class NominationEditLayout extends Rows
 {
@@ -39,4 +40,5 @@ class NominationEditLayout extends Rows
                 ->placeholder(__('Короткое название')),
         ];
     }
+
 }

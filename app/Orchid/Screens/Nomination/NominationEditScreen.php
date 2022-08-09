@@ -6,11 +6,13 @@ namespace App\Orchid\Screens\Nomination;
 
 use App\Models\Nomination;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
+use App\Orchid\Layouts\Nomination\NominationListLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 
@@ -31,7 +33,9 @@ class NominationEditScreen extends Screen
     public function query(Nomination $nomination): iterable
     {
         return [
-            'nomination' => $nomination
+            'nomination' => $nomination,
+            'title' => 'title',
+
         ];
     }
 
