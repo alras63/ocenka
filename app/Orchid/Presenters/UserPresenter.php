@@ -47,7 +47,7 @@ class UserPresenter extends Presenter implements Searchable, Personable
      */
     public function url(): string
     {
-        return route('platform.systems.users.edit', $this->entity);
+        return route('platform.systems.users.profile', $this->entity);
     }
 
     /**
