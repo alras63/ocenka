@@ -15,7 +15,13 @@
         </div>
         <div class="col col-lg-10 mt-6 p-4 d-flex flex-column justify-content-between">
             <div>
-                <h3 class="fw-light text-black">{{$user->name}}</h3>
+                <h3 class="fw-light text-black">
+                    @if($user->name != null)
+                        {{$user->name}}
+                    @else
+                        {{$user->first_name . ' ' . $user->surname . ' ' . $user->last_name}}
+                    @endif
+                </h3>
                 <div class="fw-light">Email: {{$user->email}}</div>
                 <div class="fw-light">Телефон: {{$user->phone}}</div>
             </div>
@@ -29,7 +35,7 @@
         @foreach($userEvents as $event)
                 <div class="border rounded p-2 mb-2">
                     <h5><a class="fw-light" href="{{ route('platform.events.edit', $event->event)}}">{{\App\Models\Event::where('id', $event->event)->first()->name}}</a></h5>
-                    <p class="fw-light">{{\App\Models\Event::where('id', $event->event)->first()->descriptions}}}</p>
+                    <p class="fw-light">{{\App\Models\Event::where('id', $event->event)->first()->descriptions}}</p>
                 </div>
         @endforeach
         </div>
