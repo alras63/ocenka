@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\EventNomination;
 use App\Models\Nomination;
 use App\Models\User;
+use App\Models\UserEventNomination;
 use App\Orchid\Layouts\Event\EventListLayout;
 use App\Orchid\Layouts\Event\EventNominationsListLayout;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
@@ -20,6 +21,7 @@ use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
+use function MongoDB\BSON\toJSON;
 
 class NominationEditScreen extends Screen
 {
@@ -41,8 +43,9 @@ class NominationEditScreen extends Screen
             'nomination' => $nomination,
             'title' => 'title',
             'estimates' => Event::all(),
-            'users' => User::all(),
-
+            'users' => User::wherehas('user_event_nomination', function($q) use($nomination){
+                $q->where('nomination', $nomination->id);
+            })->get(),
         ];
     }
 
@@ -117,14 +120,42 @@ class NominationEditScreen extends Screen
             'nomination.short_name' => [
                 'required'
             ],
+            'users' => [
+                'required'
+            ],
         ]);
 
-        $nomination->fill($request->get('nomination'));
 
+
+        $nominatedUsers = $request->get('users');
+        foreach ($nominatedUsers as $user){
+            $userEventNomination = new UserEventNomination;
+            $event = EventNomination::where('nominations', $nomination->id)->first();
+            if(UserEventNomination::where('user', $user)->where('nomination', $nomination->id)->first() == null){
+                $userEventNomination->fill(['user' => $user, 'event' => $event->events,'nomination' => $nomination->id]);
+                $userEventNomination->save();
+            }
+        }
+
+        $bdNominatedUsers = User::wherehas('user_event_nomination', function($q) use($nomination){
+            $q->where('nomination', $nomination->id);
+        })->get();
+        foreach($bdNominatedUsers as $user){
+            $shouldDelete = true;
+            foreach ($nominatedUsers as $u){
+                if($user->id == $u){
+                    $shouldDelete = false;
+                }
+            }
+            if($shouldDelete){
+                UserEventNomination::where('user', $user->id)->where('nomination', $nomination->id)->delete();
+            }
+        }
+
+        $nomination->fill($request->get('nomination'));
         $nomination->save();
 
         Toast::info(__('Номинация была сохранена'));
-
         return redirect()->route('platform.nominations');
     }
 
