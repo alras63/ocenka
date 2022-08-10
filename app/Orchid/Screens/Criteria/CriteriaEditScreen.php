@@ -84,6 +84,14 @@ class CriteriaEditScreen extends Screen
 
         return redirect()->route('platform.criterias');
     }
+
+    public function remove(Criteria $criteria){
+        $criteria->delete();
+
+        Toast::info(__('Критерий был удален'));
+
+        return redirect()->route('platform.criterias');
+    }
 }
 
 
