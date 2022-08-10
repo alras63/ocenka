@@ -104,10 +104,11 @@ Route::screen('roles', RoleListScreen::class)
             ->push(__('Roles'), route('platform.systems.roles'));
     });
 
-
+// Platform > Nominations
 Route::screen('nominations', \App\Orchid\Screens\Nomination\NominationListScreen::class)
     ->name('platform.nominations');
 
+// Platform > Nominations > Create
 Route::screen('nominations/create', \App\Orchid\Screens\Nomination\NominationEditScreen::class)
     ->name('platform.nominations.create')
     ->breadcrumbs(function (Trail $trail) {
@@ -115,6 +116,7 @@ Route::screen('nominations/create', \App\Orchid\Screens\Nomination\NominationEdi
             ->push(__('Create'), route('platform.nominations.create'));
     });
 
+// Platform > Nominations > Edit
 Route::screen('nominations/{role}/edit', \App\Orchid\Screens\Nomination\NominationEditScreen::class)
     ->name('platform.nominations.edit')
     ->breadcrumbs(function (Trail $trail, $role) {
@@ -122,9 +124,11 @@ Route::screen('nominations/{role}/edit', \App\Orchid\Screens\Nomination\Nominati
             ->push(__('Номинация'), route('platform.nominations.edit', $role));
     });
 
+// Platform > Events
 Route::screen('events', \App\Orchid\Screens\Event\EventListScreen::class)
     ->name('platform.events');
 
+// Platform > Events > Create
 Route::screen('events/create', \App\Orchid\Screens\Event\EventEditScreen::class)
     ->name('platform.events.create')
     ->breadcrumbs(function (Trail $trail) {
@@ -132,9 +136,30 @@ Route::screen('events/create', \App\Orchid\Screens\Event\EventEditScreen::class)
             ->push(__('Create'), route('platform.events.create'));
     });
 
+// Platform > Events > Edit
 Route::screen('events/{role}/edit', \App\Orchid\Screens\Event\EventEditScreen::class)
     ->name('platform.events.edit')
     ->breadcrumbs(function (Trail $trail, $role) {
         return $trail
-            ->push(__('Номинация'), route('platform.events.edit', $role));
+            ->push(__('Мероприятие'), route('platform.events.edit', $role));
+    });
+
+// Platform > Criterias
+Route::screen('criterias', \App\Orchid\Screens\Criteria\CriteriaListScreen::class)
+    ->name('platform.criterias');
+
+// Platform > Criterias > Create
+Route::screen('criterias/create', \App\Orchid\Screens\Criteria\CriteriaEditScreen::class)
+    ->name('platform.criterias.create')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->push(__('Create'), route('platform.criterias.create'));
+    });
+
+// Platform > Criterias > Edit
+Route::screen('criterias/{role}/edit', \App\Orchid\Screens\Criteria\CriteriaEditScreen::class)
+    ->name('platform.criterias.edit')
+    ->breadcrumbs(function (Trail $trail, $role) {
+        return $trail
+            ->push(__('Критерии'), route('platform.criterias.edit', $role));
     });
