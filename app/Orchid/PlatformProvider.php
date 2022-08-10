@@ -32,6 +32,7 @@ class PlatformProvider extends OrchidServiceProvider
                     Menu::make('1. Создать номинации')->route('platform.nominations')->icon('list'),
                     Menu::make('2. Создать пользователей')->route('platform.systems.users')->icon('user'),
                     Menu::make('3. Создать мероприятия')->route('platform.events')->icon('control-play'),
+                    Menu::make('4. Создать критерии')->route('platform.criterias')->icon('pencil'),
                 ]),
 
             Menu::make(__('Users'))
