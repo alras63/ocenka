@@ -34,7 +34,7 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Get Started';
+        return 'Таволга. Единая система';
     }
 
     /**
@@ -44,7 +44,7 @@ class PlatformScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Welcome to your Orchid application.';
+        return 'Добро пожаловать в единую систему Таволги';
     }
 
     /**
@@ -61,6 +61,7 @@ class PlatformScreen extends Screen
             Link::make('Рейтинг')
                 ->href('http://#')
                 ->class('bg-black text-white p-2 px-3 rounded')
+                ->style('background-color: #00ACAB !important')
                 ->icon('trophy'),
 
         ];

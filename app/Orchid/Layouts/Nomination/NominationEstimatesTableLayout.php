@@ -3,8 +3,10 @@
 namespace App\Orchid\Layouts\Nomination;
 
 use App\Models\Event;
+use App\Models\User;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Builder;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
@@ -38,8 +40,8 @@ class NominationEstimatesTableLayout extends Table
             TD::make('', __('Оценка за этап 1 (ИНДИГО)'))
                 ->sort()
                 ->cantHide()
-                ->render(function () {
-                    return Input::make('');
+                ->render(function (User $user) {
+                    return Input::make("users[$user->id][indigoBall]");
                 }),
             TD::make('', __('Оценка за этап 2 (в программе Конкурсы)'))
                 ->sort()
@@ -47,8 +49,8 @@ class NominationEstimatesTableLayout extends Table
             TD::make('', __('Оценка за этап 3 (вне конкурса)'))
                 ->sort()
                 ->cantHide()
-                ->render(function () {
-                    return Input::make('');
+                ->render(function (User $user) {
+                    return Input::make("users[$user->id][dopBall]");
                 }),
             TD::make('', __('Итог'))
                 ->sort()

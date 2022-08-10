@@ -16,6 +16,8 @@
         <link rel="stylesheet" type="text/css" href="{{  mix('/css/orchid.rtl.css','vendor/orchid') }}">
     @else
         <link rel="stylesheet" type="text/css" href="{{  mix('/css/orchid.css','vendor/orchid') }}">
+
+        @vite('resources/css/app.css')
     @endif
 
     @stack('head')

@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Layouts\Columns;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
@@ -173,5 +174,14 @@ class NominationEditScreen extends Screen
         Toast::info(__('Номинация была удалена'));
 
         return redirect()->route('platform.nominations');
+    }
+
+    public function test(Nomination $nomination, Request $request)
+    {
+        if($request->get('users') !== null) {
+            foreach ($request->get('users') as $user) {
+                //
+            }
+        }
     }
 }
