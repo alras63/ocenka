@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\EventNomination;
 use App\Models\Nomination;
 use App\Models\User;
+use App\Models\UserEventNomination;
 use App\Orchid\Layouts\Event\EventListLayout;
 use App\Orchid\Layouts\Event\EventNominationsListLayout;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
@@ -41,7 +42,9 @@ class NominationEditScreen extends Screen
             'nomination' => $nomination,
             'title' => 'title',
             'estimates' => Event::all(),
-            'users' => User::all(),
+            'users' => (User::whereHas(User::REL_USER_EVENT_NOMINATION, function($q) use ($nomination){
+                $q->where('nomination','=', $nomination->id);
+            })->get()),
 
         ];
     }

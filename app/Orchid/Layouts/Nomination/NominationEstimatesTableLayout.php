@@ -3,10 +3,12 @@
 namespace App\Orchid\Layouts\Nomination;
 
 use App\Models\Event;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
+use Orchid\Support\Color;
 
 class NominationEstimatesTableLayout extends Table
 {
@@ -50,7 +52,16 @@ class NominationEstimatesTableLayout extends Table
                 }),
             TD::make('', __('Итог'))
                 ->sort()
+                ->cantHide(),
+
+            TD::make('', __('Действие'))
+                ->sort()
                 ->cantHide()
+                ->render(function () {
+                        return  Button::make('Сохранить строку')->method('test')->type(Color::PRIMARY());
+                    })
+
+
         ];
     }
 }
