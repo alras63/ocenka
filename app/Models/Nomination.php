@@ -23,4 +23,6 @@ class Nomination extends Model
     public function eventNomination(){
         return $this->hasMany(EventNomination::class, 'nominations');
     }
+
+    const REL_EVENT_NOMINATION = 'eventNomination';
 }

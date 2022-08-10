@@ -3,6 +3,8 @@
 namespace App\Orchid\Screens\User;
 
 use App\Models\Event;
+use App\Models\EventNomination;
+use App\Models\Nomination;
 use App\Models\UserEventNomination;
 use App\Orchid\Layouts\User\UserNominationModalLayout;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,6 +59,16 @@ class UserProfileCardScreen extends Screen
     public function commandBar(): iterable
     {
         return [];
+    }
+
+    public function asyncNominations(int $newEvent)
+    {
+        return [
+            'newEvent' => Event::where('id', '=', $newEvent)->get(),
+            'newNomination' => EventNomination::whereHas('event', function($q) use ($newEvent) {
+                $q->where('events', '=', $newEvent);
+            })->get()
+        ];
     }
 
     /**
