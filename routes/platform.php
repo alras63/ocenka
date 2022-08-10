@@ -69,6 +69,14 @@ Route::screen('users', UserListScreen::class)
             ->push(__('Users'), route('platform.systems.users'));
     });
 
+Route::screen('users/{user}/profile', \App\Orchid\Screens\User\UserProfileCardScreen::class)
+    ->name('platform.systems.users.profile')
+    ->breadcrumbs(function (Trail $trail) {
+        return $trail
+            ->parent('platform.index')
+            ->push(__('Users'), route('platform.systems.users'));
+    });
+
 // Platform > System > Roles > Role
 Route::screen('roles/{role}/edit', RoleEditScreen::class)
     ->name('platform.systems.roles.edit')

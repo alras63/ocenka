@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens;
 
+use App\Models\Event;
+use App\Models\User;
+use App\Models\UserEventNomination;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
@@ -17,7 +20,11 @@ class PlatformScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'events' => Event::where('isClosed', 0)->get(),
+            'users' => UserEventNomination::all(),
+            'counterUsers' => 0
+        ];
     }
 
     /**
@@ -47,18 +54,15 @@ class PlatformScreen extends Screen
      */
     public function commandBar(): iterable
     {
+
         return [
-            Link::make('Website')
-                ->href('http://orchid.software')
-                ->icon('globe-alt'),
+            Link::make('Cлужащих в системе: ' . count(User::all()))
+                ->class('text-black cursor-default m-3 d-block'),
+            Link::make('Рейтинг')
+                ->href('http://#')
+                ->class('bg-black text-white p-2 px-3 rounded')
+                ->icon('trophy'),
 
-            Link::make('Documentation')
-                ->href('https://orchid.software/en/docs')
-                ->icon('docs'),
-
-            Link::make('GitHub')
-                ->href('https://github.com/orchidsoftware/platform')
-                ->icon('social-github'),
         ];
     }
 
@@ -70,7 +74,7 @@ class PlatformScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('platform::partials.welcome'),
+            Layout::view('platform::partials.active_events'),
         ];
     }
 }
