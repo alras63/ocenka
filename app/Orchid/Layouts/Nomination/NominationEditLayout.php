@@ -43,7 +43,7 @@ class NominationEditLayout extends Rows
                 ->placeholder(__('Короткое название')),
             Select::make('users.')
                 ->fromModel(User::whereHas('roleUser', function($q){
-                    $q->where('role_id', Role::where('name', 'Гражданин')->orWhere('name', 'Госслужащий')->first()?->id);
+                    $q->where('role_id', Role::where('name', 'Гражданин')->first()->id)->orWhere('role_id', Role::where('name', 'Госслужащий')->first()->id);
                 }), 'name')
                 ->multiple()
                 ->title('Назначенные участники')
