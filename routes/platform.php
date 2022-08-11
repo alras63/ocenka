@@ -124,6 +124,14 @@ Route::screen('nominations/{role}/edit', \App\Orchid\Screens\Nomination\Nominati
             ->push(__('Номинация'), route('platform.nominations.edit', $role));
     });
 
+// Platform > Nominations > Estimate
+Route::screen('nominations/{role}/estimate', \App\Orchid\Screens\Nomination\NominationEstimateScreen::class)
+    ->name('platform.nominations.estimate')
+    ->breadcrumbs(function (Trail $trail, $role) {
+        return $trail
+            ->push(__('Номинация'), route('platform.nominations.estimate', $role));
+    });
+
 // Platform > Events
 Route::screen('events', \App\Orchid\Screens\Event\EventListScreen::class)
     ->name('platform.events');
@@ -143,6 +151,14 @@ Route::screen('events/{role}/edit', \App\Orchid\Screens\Event\EventEditScreen::c
         return $trail
             ->push(__('Мероприятие'), route('platform.events.edit', $role));
     });
+
+// Platform > Events > Estimate
+Route::screen('events/{role}/estimate', \App\Orchid\Screens\Event\EventEstimateScreen::class)
+    ->name('platform.events.estimate')
+    ->breadcrumbs(function (Trail $trail, $role) {
+        return $trail
+            ->push(__('Мероприятие'), route('platform.events.estimate', $role));
+    });;
 
 // Platform > Criterias
 Route::screen('criterias', \App\Orchid\Screens\Criteria\CriteriaListScreen::class)

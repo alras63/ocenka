@@ -25,14 +25,14 @@ class EventNominationsListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::make('name', __('Name'))
+            TD::make('name', __('Номинация'))
                 ->sort()
                 ->cantHide()
                 ->width('150px')
                 ->filter(Input::make())
                 ->render(function (EventNomination $event_nominations) {
                     return Link::make($event_nominations->nomination->name)
-                        ->route('platform.nominations.edit', $event_nominations->nomination->id);
+                        ->route('platform.nominations.estimate', $event_nominations->nomination->id);
                 }),
 
         ];

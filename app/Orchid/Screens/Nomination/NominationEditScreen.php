@@ -46,7 +46,6 @@ class NominationEditScreen extends Screen
     {
         return [
             'nomination' => $nomination,
-            'title' => 'title',
             'estimates' => Event::all(),
             'users' => User::with([User::REL_USERS_EVALUATIONS])->wherehas('user_event_nomination', function($q) use($nomination){
                 $q->where('nomination', $nomination->id);
