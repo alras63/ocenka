@@ -125,22 +125,22 @@ class NominationEditScreen extends Screen
             'nomination.short_name' => [
                 'required'
             ],
-            'users' => [
-                'required'
-            ],
         ]);
 
 
 
         $nominatedUsers = $request->get('users');
-        foreach ($nominatedUsers as $user){
-            $userEventNomination = new UserEventNomination;
-            $event = EventNomination::where('nominations', $nomination->id)->first();
-            if(UserEventNomination::where('user', $user)->where('nomination', $nomination->id)->first() == null){
-                $userEventNomination->fill(['user' => $user, 'event' => $event->events,'nomination' => $nomination->id]);
-                $userEventNomination->save();
+        if($nominatedUsers != null){
+            foreach ($nominatedUsers as $user){
+                $userEventNomination = new UserEventNomination;
+                $event = EventNomination::where('nominations', $nomination->id)->first();
+                if(UserEventNomination::where('user', $user)->where('nomination', $nomination->id)->first() == null){
+                    $userEventNomination->fill(['user' => $user, 'event' => $event->events,'nomination' => $nomination->id]);
+                    $userEventNomination->save();
+                }
             }
         }
+
 
         $bdNominatedUsers = User::wherehas('user_event_nomination', function($q) use($nomination){
             $q->where('nomination', $nomination->id);
