@@ -156,6 +156,7 @@ class EventEditScreen extends Screen
 
         Toast::info(__('Мероприятие успешно сохранено'));
 
+
         return redirect()->route('platform.events');
     }
 
