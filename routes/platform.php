@@ -163,3 +163,6 @@ Route::screen('criterias/{role}/edit', \App\Orchid\Screens\Criteria\CriteriaEdit
         return $trail
             ->push(__('Критерии'), route('platform.criterias.edit', $role));
     });
+
+Route::screen('rating', \App\Orchid\Screens\RatingScreen::class)
+    ->name('platform.rating');
