@@ -37,7 +37,7 @@ class NominationEstimatesTableLayout extends Table
     protected function columns(): array
     {
         return [
-            TD::make('surname', __('Пользователь'))
+            TD::make('name', __('Пользователь'))
                 ->sort()
                 ->cantHide(),
             TD::make('', __('Оценка за этап 1 (ИНДИГО)'))
@@ -45,7 +45,7 @@ class NominationEstimatesTableLayout extends Table
                 ->cantHide()
                 ->render(function (User $user) {
                     $criteriaOne = Criteria::where('nomination', '=', $this->query->get('nomination.id'))->where('step', '=', 1)->first();
-                    $user_ev_one = UsersEvaluations::where('criterian', '=', $criteriaOne->id)->where('users', '=', $user->id)->first();
+                    $user_ev_one = UsersEvaluations::where('criterian', '=', $criteriaOne?->id)->where('users', '=', $user->id)->first();
 
                     return Input::make("users[$user->id][indigoBall]")->value($user_ev_one?->result);
                 }),
@@ -57,7 +57,7 @@ class NominationEstimatesTableLayout extends Table
                 ->cantHide()
                 ->render(function (User $user) {
                     $criteriaThree = Criteria::where('nomination', '=', $this->query->get('nomination.id'))->where('step', '=', 3)->first();
-                    $user_ev_three = UsersEvaluations::where('criterian', '=', $criteriaThree->id)->where('users', '=', $user->id)->first();
+                    $user_ev_three = UsersEvaluations::where('criterian', '=', $criteriaThree?->id)->where('users', '=', $user->id)->first();
 
                     return Input::make("users[$user->id][dopBall]")->value($user_ev_three?->result);
                 }),

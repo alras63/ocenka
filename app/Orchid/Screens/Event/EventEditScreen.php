@@ -39,7 +39,7 @@ class EventEditScreen extends Screen
             ->where(Event::ATTR_ID, '=', $event->id)->first();
         return [
             'event' => $event,
-            'event_nominations' => $fullEvent->event_nominations,
+            'event_nominations' => $fullEvent ? $fullEvent->event_nominations : [],
             'assessor' => User::whereHas('assessor', function($query) use($event){
                 $query->where('event', $event->id);
             })->get(),
@@ -124,12 +124,6 @@ class EventEditScreen extends Screen
             'event.isClosed' => [
                 'integer'
             ],
-            'assessor.' => [
-                'array'
-            ],
-            'nominations.' => [
-                'array'
-            ]
         ]);
 
 
@@ -138,23 +132,29 @@ class EventEditScreen extends Screen
         $event->save();
 
         $nominations = $request->get('nominations');
-        EventNomination::where('events', $event->id)->delete();
-        for($i=0; $i<count($nominations); $i++){
-            $nomination = new EventNomination();
-            $nomination->fill(['events'=>$event['id'], 'nominations'=>$nominations[$i]]);
-            $nomination->save();
+        if($nominations != null){
+            EventNomination::where('events', $event->id)->delete();
+            for($i=0; $i<count($nominations); $i++){
+                $nomination = new EventNomination();
+                $nomination->fill(['events'=>$event['id'], 'nominations'=>$nominations[$i]]);
+                $nomination->save();
+            }
         }
+
 
         $assessors = $request->get('assessor');
-        Assessor::where('event', $event->id)->delete();
-        for($i = 0; $i < count($assessors); $i++){
-            $assessor = new Assessor;
-            $user = User::where('id', $assessors[$i])->first();
-            $currentEvent = Event::where('id', $event['id'])->first();
-            $assessor->fill(['asessor' => $user->id, 'event'=>$currentEvent->id]);
-            $assessor->save();
+        if($assessors != null){
+            Assessor::where('event', $event->id)->delete();
+            for($i = 0; $i < count($assessors); $i++){
+                $assessor = new Assessor;
+                $user = User::where('id', $assessors[$i])->first();
+                $currentEvent = Event::where('id', $event['id'])->first();
+                $assessor->fill(['asessor' => $user->id, 'event'=>$currentEvent->id]);
+                $assessor->save();
+            }
         }
 
+        Toast::info(__('Мероприятие успешно сохранено'));
 
         return redirect()->route('platform.events');
     }

@@ -21,7 +21,8 @@ class PlatformScreen extends Screen
     public function query(): iterable
     {
         return [
-            'events' => Event::where('isClosed', 0)->get(),
+            'activeEvents' => Event::where('isClosed', 0)->get(),
+            'archiveEvents' => Event::where('isClosed', 1)->get(),
             'users' => UserEventNomination::all(),
             'counterUsers' => 0
         ];
@@ -58,11 +59,6 @@ class PlatformScreen extends Screen
         return [
             Link::make('Cлужащих в системе: ' . count(User::all()))
                 ->class('text-black cursor-default m-3 d-block'),
-            Link::make('Рейтинг')
-                ->href('http://#')
-                ->class('bg-black text-white p-2 px-3 rounded')
-                ->style('background-color: #00ACAB !important')
-                ->icon('trophy'),
 
         ];
     }
