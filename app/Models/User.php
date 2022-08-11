@@ -72,6 +72,11 @@ class User extends Authenticatable
     }
     const REL_USER_EVENT_NOMINATION = 'user_event_nomination';
 
+    public function users_evaluations(): HasMany {
+        return $this->hasMany(UsersEvaluations::class, 'users', static::ATTR_ID);
+    }
+    const REL_USERS_EVALUATIONS = 'users_evaluations';
+
 
     public function assessor(){
         return $this->hasMany(Assessor::class, 'asessor');

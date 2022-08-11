@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens\Nomination;
 
+use App\Models\Criteria;
 use App\Models\Event;
 use App\Models\EventNomination;
 use App\Models\Nomination;
 use App\Models\User;
 use App\Models\UserEventNomination;
+use App\Models\UsersEvaluations;
 use App\Orchid\Layouts\Event\EventListLayout;
 use App\Orchid\Layouts\Event\EventNominationsListLayout;
 use App\Orchid\Layouts\Nomination\NominationEditLayout;
 use App\Orchid\Layouts\Nomination\NominationEstimatesTableLayout;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Action;
 use Orchid\Screen\Actions\Button;
@@ -44,7 +48,7 @@ class NominationEditScreen extends Screen
             'nomination' => $nomination,
             'title' => 'title',
             'estimates' => Event::all(),
-            'users' => User::wherehas('user_event_nomination', function($q) use($nomination){
+            'users' => User::with([User::REL_USERS_EVALUATIONS])->wherehas('user_event_nomination', function($q) use($nomination){
                 $q->where('nomination', $nomination->id);
             })->get(),
         ];
@@ -179,8 +183,42 @@ class NominationEditScreen extends Screen
     public function test(Nomination $nomination, Request $request)
     {
         if($request->get('users') !== null) {
-            foreach ($request->get('users') as $user) {
-                //
+            foreach ($request->get('users') as $key => $user) {
+                $criteriaOne = Criteria::where('nomination', '=', $nomination->id)->where('step', '=', 1)->first();
+                $criteriaThree = Criteria::where('nomination', '=', $nomination->id)->where('step', '=', 3)->first();
+                if(null === $criteriaOne) {
+                    die("Нет созданного критерия под оценку");
+                }
+
+                if(null === $criteriaThree) {
+                    die("Нет созданного критерия под оценку");
+                }
+
+                $user_ev_one = UsersEvaluations::where('criterian', '=', $criteriaOne->id)->where('users', '=', $key)->first();
+                $user_ev_three = UsersEvaluations::where('criterian', '=', $criteriaThree->id)->where('users', '=', $key)->first();
+
+                if(is_array($user) && $user['indigoBall']) {
+                    if(null === $user_ev_one) {
+                        $user_ev_one = new UsersEvaluations();
+                        $user_ev_one->users = $key;
+                        $user_ev_one->criterian = $criteriaOne->id;
+                        $user_ev_one->asessor = Auth::id();
+                    }
+                    $user_ev_one->result = $user['indigoBall'];
+                    $user_ev_one->save();
+                }
+
+                if(is_array($user) &&  $user['dopBall']) {
+                    if (null === $user_ev_three) {
+                        $user_ev_three            = new UsersEvaluations();
+                        $user_ev_three->users     = $key;
+                        $user_ev_three->criterian = $criteriaThree->id;
+                        $user_ev_three->asessor   = Auth::id();
+                    }
+                    $user_ev_three->result = $user['dopBall'];
+
+                    $user_ev_three->save();
+                }
             }
         }
     }

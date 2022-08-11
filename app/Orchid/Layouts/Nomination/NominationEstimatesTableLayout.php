@@ -2,8 +2,11 @@
 
 namespace App\Orchid\Layouts\Nomination;
 
+use App\Models\Criteria;
 use App\Models\Event;
+use App\Models\Nomination;
 use App\Models\User;
+use App\Models\UsersEvaluations;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Builder;
@@ -41,7 +44,10 @@ class NominationEstimatesTableLayout extends Table
                 ->sort()
                 ->cantHide()
                 ->render(function (User $user) {
-                    return Input::make("users[$user->id][indigoBall]");
+                    $criteriaOne = Criteria::where('nomination', '=', $this->query->get('nomination.id'))->where('step', '=', 1)->first();
+                    $user_ev_one = UsersEvaluations::where('criterian', '=', $criteriaOne->id)->where('users', '=', $user->id)->first();
+
+                    return Input::make("users[$user->id][indigoBall]")->value($user_ev_one?->result);
                 }),
             TD::make('', __('Оценка за этап 2 (в программе Конкурсы)'))
                 ->sort()
@@ -50,7 +56,10 @@ class NominationEstimatesTableLayout extends Table
                 ->sort()
                 ->cantHide()
                 ->render(function (User $user) {
-                    return Input::make("users[$user->id][dopBall]");
+                    $criteriaThree = Criteria::where('nomination', '=', $this->query->get('nomination.id'))->where('step', '=', 3)->first();
+                    $user_ev_three = UsersEvaluations::where('criterian', '=', $criteriaThree->id)->where('users', '=', $user->id)->first();
+
+                    return Input::make("users[$user->id][dopBall]")->value($user_ev_three?->result);
                 }),
             TD::make('', __('Итог'))
                 ->sort()
